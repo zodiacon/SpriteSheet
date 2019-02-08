@@ -28,7 +28,7 @@ namespace SpriteSheet {
 			}
 			else {
 				int index = args[0].LastIndexOf('\\');
-				var directory = index < 0 ? Directory.GetCurrentDirectory() : args[0].Substring(0, index - 1);
+				var directory = index < 0 ? Directory.GetCurrentDirectory() : args[0].Substring(0, index);
 				var pattern = index < 0 ? args[0] : args[0].Substring(index + 1);
 				success = CreateSpriteSheet(Directory.EnumerateFiles(directory, pattern).OrderBy(d => d).ToArray(), args[1]);
 			}
