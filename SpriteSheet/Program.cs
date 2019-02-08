@@ -44,23 +44,23 @@ namespace SpriteSheet {
 				return false;
 			}
 			try {
-				var bmps = new Image[files.Length];
 				int width = 0, height = 0;
 				Bitmap outputBmp = null;
 				Graphics outputGfx = null;
-				for (int i = 0; i < bmps.Length; i++) {
-					bmps[i] = Image.FromFile(files[i]);
-					if (width == 0) {
-						width = bmps[i].Width;
-						height = bmps[i].Height;
-						outputBmp = new Bitmap(width, height * files.Length);
-						outputGfx = Graphics.FromImage(outputBmp);
+				for (int i = 0; i < files.Length; i++) {
+					using (var bmp = Image.FromFile(files[i])) {
+						if (width == 0) {
+							width = bmp.Width;
+							height = bmp.Height;
+							outputBmp = new Bitmap(width, height * files.Length);
+							outputGfx = Graphics.FromImage(outputBmp);
+						}
+						else if (width != bmp.Width || height != bmp.Height) {
+							Console.WriteLine("Bitmaps not the same width/height");
+							return false;
+						}
+						outputGfx.DrawImage(bmp, new Rectangle(0, height * i, width, height));
 					}
-					else if (width != bmps[i].Width || height != bmps[i].Height) {
-						Console.WriteLine("Bitmaps not the same width/height");
-						return false;
-					}
-					outputGfx.DrawImage(bmps[i], new Rectangle(0, height * i, width, height));
 					
 				}
 				outputGfx.Dispose();
